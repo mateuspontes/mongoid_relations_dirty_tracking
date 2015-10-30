@@ -4,8 +4,7 @@ require 'spec_helper'
 describe Mongoid::RelationsDirtyTracking do
   subject { TestDocument.create }
 
-
-  its(:changed?)                { should be_false }
+  its(:changed_with_relations?) { should be_false }
   its(:children_changed?)       { should be_false }
   its(:relations_changed?)      { should be_false }
   its(:changed_with_relations?) { should be_false }
@@ -18,7 +17,7 @@ describe Mongoid::RelationsDirtyTracking do
         subject.one_document = @embedded_doc
       end
 
-      its(:changed?)                { should be_true }
+      its(:changed_with_relations?)                { should be_true }
       its(:children_changed?)       { should be_false }
       its(:relations_changed?)      { should be_true }
       its(:changed_with_relations?) { should be_true }
@@ -38,7 +37,7 @@ describe Mongoid::RelationsDirtyTracking do
         subject.one_document = nil
       end
 
-      its(:changed?)                { should be_true }
+      its(:changed_with_relations?)                { should be_true }
       its(:children_changed?)       { should be_false }
       its(:relations_changed?)      { should be_true }
       its(:changed_with_relations?) { should be_true }
@@ -58,7 +57,7 @@ describe Mongoid::RelationsDirtyTracking do
         subject.one_document.title = 'foobar'
       end
 
-      its(:changed?)                { should be_true }
+      its(:changed_with_relations?)                { should be_true }
       its(:children_changed?)       { should be_true }
       its(:relations_changed?)       { should be_true }
       its(:changed_with_relations?)  { should be_true }
@@ -71,7 +70,6 @@ describe Mongoid::RelationsDirtyTracking do
         end
       end
 
-
       describe "after saving" do
         it "document is updated" do
           subject.save!
@@ -79,7 +77,6 @@ describe Mongoid::RelationsDirtyTracking do
         end
       end
     end
-
     context "when just updated_at is changed on embedded document" do
       before :each do
         embedded_doc = Class.new(TestEmbeddedDocument) { include Mongoid::Timestamps }.new
@@ -87,7 +84,7 @@ describe Mongoid::RelationsDirtyTracking do
         subject.save!
         embedded_doc.updated_at = Time.now
       end
-      its(:changed?) { should be_false }
+      its(:changed_with_relations?) { should be_false }
     end
   end
 
@@ -98,7 +95,7 @@ describe Mongoid::RelationsDirtyTracking do
         subject.many_documents << @embedded_doc
       end
 
-      its(:changed?)                { should be_true }
+      its(:changed_with_relations?)                { should be_true }
       its(:children_changed?)       { should be_false }
       its(:relations_changed?)       { should be_true }
       its(:changed_with_relations?)  { should be_true }
@@ -147,7 +144,7 @@ describe Mongoid::RelationsDirtyTracking do
         subject.many_documents.delete @embedded_doc
       end
 
-      its(:changed?)                { should be_true }
+      its(:changed_with_relations?)                { should be_true }
       its(:children_changed?)       { should be_false }
       its(:relations_changed?)      { should be_true }
       its(:changed_with_relations?) { should be_true }
@@ -168,7 +165,7 @@ describe Mongoid::RelationsDirtyTracking do
         subject.one_related = @related_doc
       end
 
-      its(:changed?)                { should be_true }
+      its(:changed_with_relations?)                { should be_true }
       its(:children_changed?)       { should be_false }
       its(:relations_changed?)      { should be_true }
       its(:changed_with_relations?) { should be_true }
@@ -188,7 +185,7 @@ describe Mongoid::RelationsDirtyTracking do
         subject.one_related = nil
       end
 
-      its(:changed?)                { should be_true }
+      its(:changed_with_relations?)                { should be_true }
       its(:children_changed?)       { should be_false }
       its(:relations_changed?)      { should be_true }
       its(:changed_with_relations?) { should be_true }
@@ -208,7 +205,7 @@ describe Mongoid::RelationsDirtyTracking do
         subject.one_related = @another_related_doc = TestRelatedDocument.new
       end
 
-      its(:changed?)                { should be_true }
+      its(:changed_with_relations?)                { should be_true }
       its(:children_changed?)       { should be_false }
       its(:relations_changed?)      { should be_true }
       its(:changed_with_relations?) { should be_true }
@@ -252,7 +249,7 @@ describe Mongoid::RelationsDirtyTracking do
         subject.many_related << @related_doc
       end
 
-      its(:changed?)                { should be_true }
+      its(:changed_with_relations?) { should be_true }
       its(:children_changed?)       { should be_false }
       its(:relations_changed?)      { should be_true }
       its(:changed_with_relations?) { should be_true }
@@ -273,7 +270,7 @@ describe Mongoid::RelationsDirtyTracking do
         subject.many_related.delete  @related_doc
       end
 
-      its(:changed?)                { should be_true }
+      its(:changed_with_relations?)                { should be_true }
       its(:children_changed?)       { should be_false }
       its(:relations_changed?)      { should be_true }
       its(:changed_with_relations?) { should be_true }
@@ -318,7 +315,7 @@ describe Mongoid::RelationsDirtyTracking do
         subject.many_to_many_related << @related_doc
       end
 
-      its(:changed?)                { should be_true }
+      its(:changed_with_relations?)                { should be_true }
       its(:children_changed?)       { should be_false }
       its(:relations_changed?)      { should be_true }
       its(:changed_with_relations?) { should be_true }
@@ -339,7 +336,7 @@ describe Mongoid::RelationsDirtyTracking do
         subject.many_to_many_related.delete  @related_doc
       end
 
-      its(:changed?)                { should be_true }
+      its(:changed_with_relations?)                { should be_true }
       its(:children_changed?)       { should be_false }
       its(:relations_changed?)      { should be_true }
       its(:changed_with_relations?) { should be_true }
@@ -362,7 +359,7 @@ describe Mongoid::RelationsDirtyTracking do
         subject.test_document = @doc
       end
 
-      its(:changed?)                { should be_true }
+      its(:changed_with_relations?)                { should be_true }
       its(:children_changed?)       { should be_false }
       its(:relations_changed?)      { should be_true }
       its(:changed_with_relations?) { should be_true }
@@ -383,7 +380,7 @@ describe Mongoid::RelationsDirtyTracking do
         subject.test_document = nil
       end
 
-      its(:changed?)                { should be_true }
+      its(:changed_with_relations?)                { should be_true }
       its(:children_changed?)       { should be_false }
       its(:relations_changed?)      { should be_true }
       its(:changed_with_relations?) { should be_true }
