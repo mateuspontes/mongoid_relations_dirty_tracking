@@ -1,3 +1,5 @@
+OBS: this branch is a fork made by @mathus208 and bopm changes
+
 # Mongoid::RelationsDirtyTracking
 
 Mongoid extension for tracking changes on document relations.
@@ -6,7 +8,7 @@ Mongoid extension for tracking changes on document relations.
 
 Add this line to your application's Gemfile:
 
-    gem 'mongoid_relations_dirty_tracking', github: 'versative/mongoid_relations_dirty_tracking'
+    gem 'mongoid_relations_dirty_tracking', github: 'mateuspontes/mongoid_relations_dirty_tracking'
 
 And then execute:
 
